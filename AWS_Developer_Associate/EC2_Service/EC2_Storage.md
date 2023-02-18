@@ -19,6 +19,7 @@
   - [EFS – Elastic File System](#efs--elastic-file-system)
     - [EFS – Performance Classes](#efs--performance-classes)
     - [EFS – Storage Classes](#efs--storage-classes)
+  - [EFS Hands-on](#efs-hands-on)
 
 ## EBS Volume
 * An EBS (Elastic Block Store) **volume** is a **network** drive you can attach to your instances while they run
@@ -205,7 +206,7 @@ to the high-performance volume
   
 ## EFS – Elastic File System
 - Managed [NFS (network file system)](../../Cloud_Basics.md) that can be mounted on many EC2
-- EFS works with EC2 instances in multi-AZ
+- EFS works with EC2 instances in multi-AZ (By default only across different zones in a single region)
 - Highly available, scalable, expensive (3x gp2), pay per use
 ![](Assets/2023-02-15-21-14-40.png)
 - Use cases: content management, web serving, data sharing, Wordpress
@@ -215,6 +216,7 @@ to the high-performance volume
 - Encryption at rest using KMS
 - POSIX file system (~Linux) that has a standard file API
 - File system scales automatically, pay-per-use, no capacity planning!
+- Costlier than EBS
 
 ### EFS – Performance Classes
 - EFS Scale
@@ -222,13 +224,13 @@ to the high-performance volume
   - Grow to Petabyte-scale network file system, automatically
 - Performance Mode (set at EFS creation time)
   - General Purpose (default) – latency-sensitive use cases (web server, CMS, etc…)
-  - Max I/O – higher latency, throughput, highly parallel (big data, media processing)
+  - Max I/O – higher latency, throughput, highly parallel (big data, media processing) (High Latency)
 - Throughput Mode
   - Bursting – 1 TB = 50MiB/s + burst of up to 100MiB/s
   - Provisioned – set your throughput regardless of storage size, ex: 1 GiB/s for 1 TB storage
   - Elastic – automatically scales throughput up or down based on your workloads
-  - Up to 3GiB/s for reads and 1GiB/s for writes
-  - Used for unpredictable workloads
+    - Up to 3GiB/s for reads and 1GiB/s for writes
+    - Used for unpredictable workloads
 
 ### EFS – Storage Classes
 - **Storage Tiers** 
@@ -243,3 +245,24 @@ to the high-performance volume
   - One Zone: One AZ, great for dev, backup enabled by default, compatible with IA (EFS One Zone-IA)
   - Over 90% in cost savings
 
+## EFS Hands-on 
+
+Open EFS and configure options based on requirements
+![](Assets/2023-02-18-11-50-15.png)
+
+![](Assets/2023-02-18-11-50-38.png)
+
+Create a security group with no inbound rules to attach to the mount points
+![](Assets/2023-02-18-11-57-54.png)
+
+Now attach this EFS to different isntances at different zones in the same region.
+
+For attaching EFS to 1A zone, set subnet of ec2 to 1A
+![](Assets/2023-02-18-12-02-31.png)
+
+Attach EFS, it will automatically created security groups for both efs and the instance for mutual access. Note the mount point path, which will be used in instances.
+![](Assets/2023-02-18-12-03-22.png)
+
+Repeat the same for other zones (B)
+
+Connect to both instances and create files and check you must be acessing these files in both instances
