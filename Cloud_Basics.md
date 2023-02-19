@@ -16,6 +16,7 @@
     - [Can a virtual machine has more than one os?](#can-a-virtual-machine-has-more-than-one-os)
     - [Summary of these concepts](#summary-of-these-concepts)
   - [Networks](#networks)
+    - [Network Traffic/Protocols](#network-trafficprotocols)
   - [Network File System (NFS)](#network-file-system-nfs)
 
 
@@ -105,6 +106,34 @@
 - For example, when you visit a website in your web browser, the browser sends a request to the server for the page you want to view. The request is sent to a specific port on the server, such as port 80 for HTTP or port 443 for HTTPS. The server then processes the request and sends back the requested data to the browser via the same port.
 - In summary, ports are used to distinguish between different services and applications running on the same host and to route incoming data to the correct application or process. 
 - In this example, the port helps the server distinguish between different incoming requests and route each request to the appropriate service or application for processing.
+  
+### Network Traffic/Protocols
+
+**HTTP (Hypertext Transfer Protocol):**  
+- This is a protocol used for transmitting data over the World Wide Web. HTTP is an application layer protocol that uses the Transmission Control Protocol (TCP) as its transport protocol.
+-  HTTP is used to exchange text, images, and other content between a web server and a client (such as a web browser).
+- **Use cases:** HTTP is used for any application that requires the transfer of text, images, and other content between a server and a client. For example, it is commonly used for websites, web services, and APIs.
+
+**HTTPS (Hypertext Transfer Protocol Secure):** 
+- This is a secure version of HTTP that uses SSL/TLS encryption to protect the data transmitted over the network.
+-  HTTPS is used to provide secure communication over the internet and is commonly used for online banking, e-commerce transactions, and other applications that require data security.
+- **Use cases:** HTTPS is used for any application that requires secure transmission of sensitive information, such as passwords, credit card numbers, and personal information. It is commonly used for online banking, e-commerce transactions, and other applications that require data security.
+
+**TCP (Transmission Control Protocol):** 
+- This is a reliable, connection-oriented protocol that ensures data is delivered between two endpoints without error. 
+- TCP is a transport layer protocol that provides a reliable, ordered, and error-checked delivery of data packets between applications.
+**Use cases:** TCP is used for any application that requires reliable, ordered, and error-checked delivery of data packets. It is commonly used for email, file transfers, and web browsing.
+
+**UDP (User Datagram Protocol):** 
+- This is an unreliable, connectionless protocol that does not guarantee delivery of data packets.
+-  UDP is a transport layer protocol that is often used for real-time applications, such as voice and video streaming, where some data loss is acceptable.
+- **Use cases:** UDP is used for any application that requires real-time delivery of data packets, where some data loss is acceptable. It is commonly used for video streaming, online gaming, and voice-over-IP (VoIP) applications.
+
+Overall, the choice of protocol to use depends on the specific requirements of the application. HTTP and HTTPS are used for general web traffic, while TCP is used for reliable data transfer and UDP is used for real-time applications.
+
+
+
+
 
 ## Network File System (NFS)
 
