@@ -20,6 +20,7 @@
     - [EFS – Performance Classes](#efs--performance-classes)
     - [EFS – Storage Classes](#efs--storage-classes)
   - [EFS Hands-on](#efs-hands-on)
+  - [Relation Througput, IOPS, Storage (Optional)](#relation-througput-iops-storage-optional)
 
 ## EBS Volume
 * An EBS (Elastic Block Store) **volume** is a **network** drive you can attach to your instances while they run
@@ -79,7 +80,9 @@
 * Not necessary to detach volume to do a snapshot, but recommended
 * Can copy snapshots in different **regions**
 <img src="https://github.com/abhinav-dholi/AWS-Dev-Associate-Preparation/blob/main/Stephane%20Maarek%20Course/Pictures/ebs_8.png"  width="80%" height="40%">
-* From a snapshot we can create an EBS volume at any region, so this new EBS can be attached to other EC2 instance 
+
+* We cannot directly use an EBS snapshot from one region to create an EBS volume in another region. **EBS snapshots are region-specific**, which means that they can only be used to create EBS volumes in the same region where the snapshot was taken.
+* However, you can copy an EBS snapshot from one region to another and then use the copied snapshot to create a new EBS volume in the target region.
 * This way, we can use two identical EBS volumes for two different instances (indirectly using one EBS for >1 instances)
 * Snapshots are useful for disaster recovery (can copy a snapshot to different regions)
 
@@ -117,7 +120,7 @@ Also try working with the recycling bin
 - AMI are a customization of an EC2 instance
 - You add your own software, configuration, operating system, monitoring…
 - Faster boot / configuration time because all your software is pre-packaged
-- AMI are built for a specific region (and can be copied across regions)
+- AMIs are built for a specific AWS Region, they're unique for each AWS Region. You can't launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.
 - You can launch EC2 instances from:
   - A Public AMI: AWS provided
   - Your own AMI: you make and maintain them yourself
@@ -266,3 +269,22 @@ Attach EFS, it will automatically created security groups for both efs and the i
 Repeat the same for other zones (B)
 
 Connect to both instances and create files and check you must be acessing these files in both instances
+
+## Relation Througput, IOPS, Storage (Optional)
+- In AWS, there is a relationship between throughput, IOPS, and storage .
+
+- **IOPS **(Input/Output Operations Per Second) is a measure of the number of read or write operations that can be performed on an EBS volume in a second. 
+- **Throughput**, on the other hand, is a measure of the amount of data that can be read or written to an EBS volume in a second, and is typically measured in MB/s.
+
+- The maximum IOPS and throughput that an EBS volume can achieve depend on the volume type and size. In general, larger EBS volumes can achieve higher IOPS and throughput than smaller volumes.
+
+- Additionally, different EBS volume types have different IOPS and throughput limits. For example, the General Purpose SSD (gp2) volume type has a maximum of 16,000 IOPS and 250 MB/s throughput, while the Provisioned IOPS SSD (io1) volume type can provide up to 64,000 IOPS and 1,000 MB/s throughput.
+
+- The storage capacity of an EBS volume also affects its IOPS and throughput performance. As the volume size increases, the number of IOPS that can be sustained by the volume also increases, up to the maximum limit for the volume type. 
+- This is because the larger size allows for more parallelism in the I/O operations, enabling the volume to sustain higher IOPS.
+
+- In summary, the relationship between throughput, IOPS, and storage in AWS is that the maximum IOPS and throughput that an EBS volume can achieve depends on the volume type and size, with larger volumes generally able to support higher IOPS and throughput.
+-  Additionally, as the storage capacity of an EBS volume increases, its IOPS performance also increases, up to the maximum limit for the volume type.
+
+
+
