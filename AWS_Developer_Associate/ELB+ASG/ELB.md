@@ -12,9 +12,13 @@
     - [SSL – Server Name Indication (SNI)](#ssl--server-name-indication-sni)
     - [Elastic Load Balancers – SSL Certificates](#elastic-load-balancers--ssl-certificates)
   - [Connection Draining](#connection-draining)
-  - [Auto Scaling Group?](#auto-scaling-group)
+  - [Auto Scaling Group](#auto-scaling-group)
   - [Auto Scaling - CloudWatch Alarms \& Scaling](#auto-scaling---cloudwatch-alarms--scaling)
-    - [Dynamic Scaling Policies](#dynamic-scaling-policies)
+  - [ASG Hands-on](#asg-hands-on)
+  - [ASG Scaling Policies](#asg-scaling-policies)
+    - [Dynamic scaling policies](#dynamic-scaling-policies)
+    - [Scheduled Actions](#scheduled-actions)
+    - [Predictive Scaling](#predictive-scaling)
   
 
 ## **Application Load Balancer (v2)**
@@ -214,7 +218,7 @@ seconds)
 - Can be disabled (set value to 0)
 - Set to a low value if your requests are short
 
-## Auto Scaling Group?
+## Auto Scaling Group
 ![](Assets/2023-02-20-21-48-20.png)
 - In real-life, the load on your websites and application can change
 - In the cloud, you can create and get rid of servers very quickly
@@ -246,4 +250,49 @@ seconds)
   - We can create scale-out policies (increase the number of instances)
   - We can create scale-in policies (decrease the number of instances)
 
-### Dynamic Scaling Policies
+## ASG Hands-on 
+- create launch template
+  ![](Assets/2023-02-21-20-37-17.png)
+- Attch ASG to load balancer at the **target group level**
+- choose capacties min, max, desired
+  ![](Assets/2023-02-21-20-49-40.png)
+- We can see minimum number of instances getting created
+  ![](Assets/2023-02-21-20-52-36.png)
+  
+  
+## ASG Scaling Policies
+### Dynamic scaling policies
+- **Target Tracking Scaling**
+  - Most simple and easy to set-up
+  - Example: I want the average ASG CPU to stay at around 40%
+- **Simple / Step Scaling**
+  - When a CloudWatch alarm is triggered (example CPU > 70%), then add 2 units
+  - When a CloudWatch alarm is triggered (example CPU < 30%), then remove 1
+### Scheduled Actions
+  - Anticipate a scaling based on known usage patterns
+  - Example: increase the min capacity to 10 at 5 pm on Fridays
+
+### Predictive Scaling
+  - continuously forecast load and schedule scaling ahead  
+  
+**Good metrics to scale on**
+- CPUUtilization: Average CPU 
+utilization across your instances
+- RequestCountPerTarget: to make sure 
+the number of requests per EC2 
+instances is stable
+- Average Network In / Out (if you’re 
+application is network bound)
+- Any custom metric (that you push 
+using CloudWatch)  
+
+**Auto Scaling Groups - Scaling Cooldowns**
+- After a scaling activity happens, you are in 
+the cooldown period (default 300 seconds)
+- During the cooldown period, the ASG will 
+not launch or terminate additional 
+instances (to allow for metrics to stabilize)
+- Advice: Use a ready-to-use AMI to reduce 
+configuration time in order to be serving 
+request fasters and reduce the cooldown 
+period
