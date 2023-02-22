@@ -16,9 +16,9 @@
   - [Auto Scaling - CloudWatch Alarms \& Scaling](#auto-scaling---cloudwatch-alarms--scaling)
   - [ASG Hands-on](#asg-hands-on)
   - [ASG Scaling Policies](#asg-scaling-policies)
-    - [Dynamic scaling policies](#dynamic-scaling-policies)
-    - [Scheduled Actions](#scheduled-actions)
-    - [Predictive Scaling](#predictive-scaling)
+    - [**Dynamic scaling policies**](#dynamic-scaling-policies)
+    - [**Scheduled Actions**](#scheduled-actions)
+    - [**Predictive Scaling**](#predictive-scaling)
   
 
 ## **Application Load Balancer (v2)**
@@ -254,25 +254,27 @@ seconds)
 - create launch template
   ![](Assets/2023-02-21-20-37-17.png)
 - Attch ASG to load balancer at the **target group level**
-- choose capacties min, max, desired
   ![](Assets/2023-02-21-20-49-40.png)
+  
+- choose capacties min, max, desired
+  
 - We can see minimum number of instances getting created
   ![](Assets/2023-02-21-20-52-36.png)
   
   
 ## ASG Scaling Policies
-### Dynamic scaling policies
-- **Target Tracking Scaling**
+### **Dynamic scaling policies**
+- Target Tracking Scaling
   - Most simple and easy to set-up
   - Example: I want the average ASG CPU to stay at around 40%
-- **Simple / Step Scaling**
+- Simple / Step Scaling
   - When a CloudWatch alarm is triggered (example CPU > 70%), then add 2 units
   - When a CloudWatch alarm is triggered (example CPU < 30%), then remove 1
-### Scheduled Actions
+### **Scheduled Actions**
   - Anticipate a scaling based on known usage patterns
   - Example: increase the min capacity to 10 at 5 pm on Fridays
 
-### Predictive Scaling
+### **Predictive Scaling**
   - continuously forecast load and schedule scaling ahead  
   
 **Good metrics to scale on**
