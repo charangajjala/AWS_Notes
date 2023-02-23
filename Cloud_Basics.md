@@ -18,6 +18,9 @@
   - [Networks](#networks)
     - [Network Traffic/Protocols](#network-trafficprotocols)
   - [Network File System (NFS)](#network-file-system-nfs)
+  - [Application Servers, Sessions, Caches](#application-servers-sessions-caches)
+    - [Sessions](#sessions)
+    - [Cache](#cache)
 
 
 ## Virtualization
@@ -144,6 +147,33 @@ Overall, the choice of protocol to use depends on the specific requirements of t
 - **For instance**, a website may have a large number of images that need to be served to users. Instead of having one server handle all the requests for those images, the website could set up a cluster of servers, with each server handling a portion of the image requests. NFS could be used to share the images across all the servers in the cluster, so that each server can access the same content and serve it to users.
 - By distributing the load across multiple machines, NFS helps to improve performance, reduce downtime, and make it easier to manage complex server configurations. 
 
+## Application Servers, Sessions, Caches
+### Sessions
+**A server typically stores session details of a client in one of the following ways:**
+
+- **Server-side sessions:** The session data is stored on the server in a file or a database, and a unique session ID is assigned to each client. The session ID is then sent to the client as a cookie, which is used to identify the session on subsequent requests. The server retrieves the session data using the session ID.
+
+- **Client-side sessions**: In this approach, the session data is stored in a cookie on the client-side. The server sends the session data to the client as a cookie, and the cookie is sent back to the server on each subsequent request. This approach has some security concerns as the session data is stored on the client-side, and it can be tampered with.
+
+- **Database sessions**: The session data is stored in a database, and a unique session ID is assigned to each client. The server retrieves the session data from the database using the session ID.
+
+The choice of where to store session data depends on factors like the size of the session data, the number of clients, and the server's capabilities. However, server-side sessions are the most common approach used by servers to store session details of clients.
+
+### Cache
+- Servers use cache to improve performance and reduce load times for clients. When a client makes a request to a server, the server may have to perform time-consuming operations like accessing a database or processing data before sending a response. 
+- Caching the result of such operations can significantly reduce the response time for subsequent requests.
+
+**Servers can use several types of cache, including:**
+
+- Content cache: This cache stores frequently accessed content such as images, videos, and HTML files, and serves them to clients without accessing the original source.
+
+- **Database cache:** This cache stores frequently accessed database records in memory, reducing the number of disk accesses required to serve requests.
+
+- **Application cache:** This cache stores frequently accessed application data or objects, improving application performance.
+
+- CDN cache: Content Delivery Networks (CDNs) cache content at multiple locations around the world, reducing network latency and improving the performance of globally distributed websites.
+
+- Cache can be stores in RAM, CPU Cache, Disk of the server instance.
 
 
   

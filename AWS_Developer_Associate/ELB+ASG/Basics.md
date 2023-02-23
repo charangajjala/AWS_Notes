@@ -1,5 +1,4 @@
 
-
 # Basics
 - [Basics](#basics)
   - [Scalability](#scalability)

@@ -7,10 +7,13 @@
   - [**RDS Multi AZ (Disaster Recovery)**](#rds-multi-az-disaster-recovery)
     - [RDS – From Single-AZ to Multi-AZ](#rds--from-single-az-to-multi-az)
   - [RDS Hands on](#rds-hands-on)
-  - [**Amazon Aurora** (Very Important)](#amazon-aurora-very-important)
+  - [**Amazon Aurora** **(Very Important)**](#amazon-aurora-very-important)
     - [Aurora High Availability and Read Scaling](#aurora-high-availability-and-read-scaling)
     - [Aurora DB Cluster](#aurora-db-cluster)
     - [Features of Aurora](#features-of-aurora)
+  - [Aurora Hand-on](#aurora-hand-on)
+  - [RDS \& Aurora Security](#rds--aurora-security)
+  - [Amazon RDS Proxy](#amazon-rds-proxy)
 
 ## Relational Database Service (RDS)
 - It’s a managed DB service for DB use SQL as a query language. 
@@ -115,7 +118,7 @@ database to enable muilti-az mode
 - You will create an admin user and password and use that to authenticate and connect to the database through **3rd party client** (not ssh connection)
 - Then as the admin user you can create db, tables etc.. in the RDS instance
 
-## **Amazon Aurora** (Very Important)
+## **Amazon Aurora** **(Very Important)**
 
 - Aurora is a proprietary technology from AWS (**not open sourced**)
 - Postgres and MySQL are both supported as Aurora DB (that means your 
@@ -160,3 +163,43 @@ over MySQL on RDS, over 3x the performance of Postgres on RDS
 - Advanced Monitoring
 - Routine Maintenance
 - **Backtrack**: restore data at any point of time without using backups
+
+## Aurora Hand-on 
+- Similar to RDS , here can only select PostgreSQL or MySQL engines 
+- You can enable Multi-AZ mode by creating read replicas or read nodes in different azs
+- After creating, youll see a writer instance and a reader instance created. You get one writer endpoint and one reader endpoint
+- You can add more replicas needed and apply auto scaling policy on them.
+- Afaik, only target scaling policy is there for this
+  
+## RDS & Aurora Security
+- At-rest encryption:
+  - Database master & replicas encryption using AWS KMS – must be defined as launch time
+  - If the master is not encrypted, the read replicas cannot be encrypted
+  - To encrypt an un-encrypted database, go through a DB snapshot & restore as encrypted
+- In-flight encryption: TLS-ready by default, use the AWS TLS root certificates client-side
+- IAM Authentication: IAM roles to connect to your database (instead of username/pw)
+   - If your instance has an IAM role it can be authenticated to use the database.
+- Security Groups: Control Network access to your RDS / Aurora DB
+- No SSH available except on **RDS Custom**
+- Audit Logs can be enabled and sent to CloudWatch Logs for longer retention
+
+## Amazon RDS Proxy
+- Fully managed database proxy for RDS
+- Allows apps to pool and share DB connections
+established with the database
+- Improving database efficiency by reducing the stress
+on database resources (e.g., CPU, RAM) and
+minimize open connections (and timeouts)
+   - Pulls many **lambda requests** and handle them for open requests and timeouts
+   - Refer again in Lamda Functions Service
+- Serverless, autoscaling, highly available (multi-AZ)
+- Reduced RDS & Aurora **failover time by up 66%**
+   - When master fails, all applications no need to failover to new master
+   - Instead, they can simply failover to the proxy and proxy handles failover to the new master
+- Supports RDS (MySQL, PostgreSQL, MariaDB) and
+Aurora (MySQL, PostgreSQL)
+- No code changes required for most apps
+- **Enforce IAM Authentication for DB, and securely
+store credentials in AWS Secrets Manager**
+- RDS Proxy is never publicly accessible (must be
+accessed from VPC)
