@@ -6,6 +6,7 @@
     - [RDS Read Replicas – Network Cost](#rds-read-replicas--network-cost)
   - [**RDS Multi AZ (Disaster Recovery)**](#rds-multi-az-disaster-recovery)
     - [RDS – From Single-AZ to Multi-AZ](#rds--from-single-az-to-multi-az)
+  - [**RDS Important Takeaways**](#rds-important-takeaways)
   - [RDS Hands on](#rds-hands-on)
   - [**Amazon Aurora** **(Very Important)**](#amazon-aurora-very-important)
     - [Aurora High Availability and Read Scaling](#aurora-high-availability-and-read-scaling)
@@ -112,6 +113,13 @@ database to enable muilti-az mode
   - Synchronization is established 
   between the two databases
 
+## **RDS Important Takeaways**
+- It is not possible to create a standby instance in a **different region** when using Multi-AZ in AWS RDS.
+- When Multi-AZ is enabled, a **standby instance** is created in a different Availability Zone (AZ) within the same region as the primary instance
+- To provide additional disaster recovery capabilities in case of a **regional outage**, you can create a **read replica** in a different region. 
+- However, the read replica does not provide **automatic failover** capabilities like Multi-AZ. 
+- In the event of a regional outage, you would need to manually **promote the read replica** to become the new primary instance.
+-  **Multi-AZ** is not available for read replicas in AWS RDS. Multi-AZ is a high availability feature that is **only available for the primary instance** in a database cluster, and it provides automatic **failover within only the same region.**
 ## RDS Hands on 
 - Create RDS with desired DB engine and configurations
 - You can select all the features above in the console.
