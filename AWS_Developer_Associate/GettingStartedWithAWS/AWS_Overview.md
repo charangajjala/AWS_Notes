@@ -19,7 +19,7 @@
 
 * AWS has Regions all around the world
 * Names can be us*east*|, eu*west*3...
-* A region is a cluster of data centers
+* A region is a **cluster of data centers**
 * Most AWS services are region*scoped
   
 ## How to choose an AWS Region?
@@ -54,7 +54,7 @@ ultra*low latency networking
     * Route 53 (DNS service)
     * CloudFront (Content Delivery Network)
     * WAF (Web Application Firewall)
-* Most AWS services are Region-scoped:
+* **Most AWS services are Region-scoped:**
   * Amazon EC2 (Infrastructure as a Service)
   * Elastic Beanstalk (Platform as a Service)
   * Lambda (Function as a Service)

@@ -1,4 +1,7 @@
-## These are the notes written while preparing for the developer associated certification from a udemy course called [Ultimate AWS Certified Developer Associate 2023 - NEW!](https://www.udemy.com/course/aws-certified-developer-associate-dva-c01/). These notes are for everyone to prepare and revise easily 😊. 
+# These are the notes written while preparing for the developer associated certification from a udemy course called [Ultimate AWS Certified Developer Associate 2023 - NEW!](https://www.udemy.com/course/aws-certified-developer-associate-dva-c01/). These notes are for everyone to prepare and revise easily 😊. 
+
+## We're going to learn all these services
+![](Assets/2023-02-25-21-48-27.png)
 
 ## Topics:
 * [Getting Started with AWS](GettingStartedWithAWS/AWS_Overview.md)
