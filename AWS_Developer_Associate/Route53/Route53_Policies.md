@@ -4,10 +4,11 @@
   - [Simple](#simple)
   - [Weighted](#weighted)
   - [Latency-based](#latency-based)
-  - [Route 53 – Health Checks](#route-53--health-checks)
-    - [Health Checks – Monitor an Endpoint](#health-checks--monitor-an-endpoint)
-    - [Route 53 – Calculated Health Checks](#route-53--calculated-health-checks)
-    - [Health Checks – Private Hosted Zones](#health-checks--private-hosted-zones)
+  - [FailOver](#failover)
+  - [Geolocation](#geolocation)
+  - [Geoproximity](#geoproximity)
+  - [Multi-Value](#multi-value)
+  - [Traffic flow](#traffic-flow)
 
 ## Simple
 - Typically, route traffic to a single 
@@ -29,7 +30,7 @@ specific resource
 - Weights don’t need to sum up to 100
 - DNS records must have the same name and type
 - Can be associated with Health Checks
-- Use cases: load balancing between regions, testing 
+- Use cases: **load balancing between regions**, testing 
 new application versions…
 - **Assign a weight of 0 to a record to stop sending 
 traffic to a resource**
@@ -49,59 +50,61 @@ directed to the US (if that’s the
 lowest latency)**
 - Can be associated with Health 
 Checks (has a failover 
-capability
+capability)
 
-## Route 53 – Health Checks
-![](Assets/2023-02-27-21-59-04.png)
-- HTTP Health Checks are only for public 
-resources
-- Health Check => Automated DNS Failover:
-1. Health checks that monitor an endpoint 
-(application, server, other AWS resource)
-2. Health checks that monitor other health 
-checks (Calculated Health Checks)
-3. Health checks that monitor CloudWatch 
-Alarms (full control !!) – e.g., throttles of 
-DynamoDB, alarms on RDS, custom metrics, 
-… (helpful for private resources)
-- Health Checks are integrated with CW 
-metrics
+## FailOver
+![](Assets/2023-02-28-20-59-35.png)
 
-### Health Checks – Monitor an Endpoint
-![](Assets/2023-02-27-22-01-50.png)
-- About 15 global health checkers will check the 
-endpoint health
-- Healthy/Unhealthy Threshold – 3 (default)
-- Interval – 30 sec (can set to 10 sec – higher cost)
-- Supported protocol: HTTP, HTTPS and TCP
-- If > 18% of health checkers report the endpoint is 
-healthy, Route 53 considers it Healthy. Otherwise, it’s 
-Unhealthy
-- Ability to choose which locations you want Route 53 to use
-- Health Checks pass only when the endpoint 
-responds with the 2xx and 3xx status codes
-- Health Checks can be setup to pass / fail based on 
-the text in the first 5120 bytes of the response
-- Configure you router/firewall to allow incoming 
-requests from Route 53 Health Checkers
+## Geolocation
+![](Assets/2023-02-28-21-01-17.png)
+- Different from **Latency-based!** 
+- This routing is based on user location
+- Specify location by Continent, Country 
+or by US State (if there’s overlapping, 
+most precise location selected)
+- Should create a “Default” record (in 
+case there’s no match on location)
+- Use cases: website localization, restrict 
+content distribution, load balancing, …
+- Can be associated with Health Checks
 
-### Route 53 – Calculated Health Checks
-![](Assets/2023-02-27-22-02-33.png)
-- Combine the results of multiple Health 
-Checks into a single Health Check
-- You can use OR, AND, or NOT
-- Can monitor up to 256 Child Health Checks
-- Specify how many of the health checks need 
-to pass to make the parent pass
-- **Usage: perform maintenance to your website without causing all health checks to fail**
+## Geoproximity
+![](Assets/2023-02-28-21-11-17.png)
+- Route traffic to your resources based on the geographic location of users and 
+resources in region level
+- Ability to shift more traffic to resources based on the defined bias
+  - To change the size of the geographic region, specify bias values:
+  - To expand (1 to 99) – more traffic to the resource
+  - To shrink (-1 to -99) – less traffic to the resource
+- Resources can be:
+  - AWS resources (specify AWS region)
+  - Non-AWS resources (specify Latitude and Longitude)
+  - You must use Route 53 Traffic Flow to use this feature
+- If you want to distribute traffic evenly between multiple endpoints, regardless of location, use **weighted routing policy.**
+-  If you want to direct users to the endpoint closest to them, use Geo proximity routing policy.
 
-### Health Checks – Private Hosted Zones
-![](Assets/2023-02-27-22-03-02.png)
-- Route 53 health checkers are outside the 
-VPC
-- They can’t access private endpoints 
-(private VPC or on-premises resource)
-- You can create a CloudWatch Metric and 
-associate a CloudWatch Alarm, then 
-create a Health Check that checks the 
-alarm itself
+## Multi-Value
+![](Assets/2023-02-28-21-15-58.png)
+- Use when routing traffic to multiple resources
+- Route 53 return multiple values/resources
+- Can be associated with Health Checks (return only values for healthy resources)
+- Up to 8 healthy records are returned for each Multi-Value query
+- Multi-Value is not a substitute for having an ELB
+
+## Traffic flow
+- Simplify the process of creating and 
+maintaining records in large and 
+complex configurations
+- Visual editor to manage complex 
+routing decision trees
+- Configurations can be saved as 
+Traffic Flow Policy 
+  - Can be applied to different Route 53 
+  Hosted Zones (different domain 
+  names)
+  - Supports versioning
+
+
+
+
+

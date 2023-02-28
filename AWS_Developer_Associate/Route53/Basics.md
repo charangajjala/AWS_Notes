@@ -6,7 +6,12 @@
   - [Hosted Zones](#hosted-zones)
   - [Route 53–Records TTL (Time To Live)](#route-53records-ttl-time-to-live)
   - [CNAME vs Alias](#cname-vs-alias)
-  - [Alais Records](#alais-records)
+  - [Alias Records](#alias-records)
+  - [Route 53 Health Checks](#route-53-health-checks)
+    - [Monitor an Endpoint](#monitor-an-endpoint)
+    - [Calculated Health Checks](#calculated-health-checks)
+    - [Private Hosted Zones](#private-hosted-zones)
+  - [Domain Registar vs. DNS Service](#domain-registar-vs-dns-service)
   - [Route53 Hands-on](#route53-hands-on)
 
 ## Domain Name System (DNS)
@@ -109,7 +114,7 @@ record
   - Free of charge 
   - Native health check
 
-## Alais Records
+## Alias Records
 ![](Assets/2023-02-27-20-51-59.png)
 - Maps a hostname to an AWS resource
 - An extension to DNS functionality
@@ -133,9 +138,79 @@ AWS resources (IPv4 / IPv6)
 - Route 53 record in the same hosted zone
 - You cannot set an ALIAS record for an **EC2 DNS name**
 
+## Route 53 Health Checks
+![](Assets/2023-02-27-21-59-04.png)
+- HTTP Health Checks are only for public 
+resources
+- Health Check => Automated DNS Failover:
+1. Health checks that monitor an endpoint 
+(application, server, other AWS resource)
+2. Health checks that monitor other health 
+checks (Calculated Health Checks)
+3. Health checks that monitor CloudWatch 
+Alarms (full control !!) – e.g., throttles of 
+DynamoDB, alarms on RDS, custom metrics, 
+… (helpful for private resources)
+- Health Checks are integrated with CW 
+metrics
 
+### Monitor an Endpoint
+![](Assets/2023-02-27-22-01-50.png)
+- About 15 global health checkers will check the 
+endpoint health
+- Healthy/Unhealthy Threshold – 3 (default)
+- Interval – 30 sec (can set to 10 sec – higher cost)
+- Supported protocol: HTTP, HTTPS and TCP
+- If > 18% of health checkers report the endpoint is 
+healthy, Route 53 considers it Healthy. Otherwise, it’s 
+Unhealthy
+- Ability to choose which locations you want Route 53 to use
+- Health Checks pass only when the endpoint 
+responds with the 2xx and 3xx status codes
+- Health Checks can be setup to pass / fail based on 
+the text in the first 5120 bytes of the response
+- Configure you router/firewall to allow incoming 
+requests from Route 53 Health Checkers
 
+### Calculated Health Checks
+![](Assets/2023-02-27-22-02-33.png)
+- Combine the results of multiple Health 
+Checks into a single Health Check
+- You can use OR, AND, or NOT
+- Can monitor up to 256 Child Health Checks
+- Specify how many of the health checks need 
+to pass to make the parent pass
+- **Usage: perform maintenance to your website without causing all health checks to fail**
 
+### Private Hosted Zones
+![](Assets/2023-02-27-22-03-02.png)
+- Route 53 health checkers are outside the 
+VPC
+- They can’t access private endpoints 
+(private VPC or on-premises resource)
+- You can create a CloudWatch Metric and 
+associate a CloudWatch Alarm, then 
+create a Health Check that checks the 
+alarm itself
+
+## Domain Registar vs. DNS Service
+- You buy or register your domain name with a Domain Registrar typically by 
+paying annual charges (e.g., GoDaddy, Amazon Registrar Inc., …)
+- The Domain Registrar usually provides you with a DNS service to manage 
+your DNS records
+- But you can use another DNS service to manage your DNS records
+- Example: purchase the domain from GoDaddy and use Route 53 to manage 
+your DNS records  
+
+**3rd Party Registrar with Amazon Route 53**
+![](Assets/2023-02-28-21-27-29.png)
+- If you buy your domain on a 3rd party registrar, you can still use Route 
+53 as the DNS Service provider
+   - Create a Hosted Zone in Route 53
+   - Update NS Records on 3rd party website to use Route 53 Name 
+Servers
+- Domain Registrar != DNS Service
+- But every Domain Registrar usually comes with some DNS features
 
 
 ## Route53 Hands-on
