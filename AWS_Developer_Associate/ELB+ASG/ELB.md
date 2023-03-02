@@ -51,7 +51,7 @@
 
 ### ALB Hands on 
 - Create two instances for creating a target group. Add User Data as well. Make sure to add security group that allows ssh and http traffic from any where. (like launch-wizard-1)
-- Create a securtiy group that allows incming hhtp traffic from any where so could attach to load balancer
+- Create a securtiy group that allows incoming http traffic from any where so could attach to load balancer
 - Start creating load balancer, attach above sg 
 
   ![](Assets/2023-02-19-20-01-52.png)
@@ -68,7 +68,7 @@
 
 - We can observe, from alb dns we refresh , we get different hostnames because of load balancing
 
-- To stop getting respone through instance dns, we can attach alb-sg to sg of these instances as source
+- To stop getting respone through instance dns, **we can attach alb-sg to sg** of these instances as source
   
    ![](Assets/2023-02-19-20-30-44.png)
 

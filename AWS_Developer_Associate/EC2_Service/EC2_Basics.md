@@ -143,14 +143,18 @@ Note: `After everytime you restart an instance, the public ip will change but pr
 * They control how traffic is allowed into or out of our EC2 instances
 <img src="https://github.com/abhinav-dholi/AWS-Dev-Associate-Preparation/blob/main/Stephane%20Maarek%20Course/Pictures/secgrp_1.png"  width="80%" height="40%">
 
-* Security groups only contain **allow** rules
-* Security groups rule can reference by IP or by security group
-* Security groups are acting as a "Firewall" on EC2 instances
+* Security groups are acting as a **"Firewall"** on EC2 instances.
 * They regulate:
   * Access to ports 
   * Authorise IP ranges - IPV4 & IPV6
   * Control of inbound network (from other side to instance)
   * Control of outbound network (from the instance to other)
+* Security groups only contain **allow** rules
+* The source can be an IP address, CIDR block, **another security group**, or a combination of these.
+  * When you attach a security group as the source of a security group rule, it means that any resources associated with that source security group will be allowed to access the resources associated with the target security group as per the rules specified.
+  * For example, if you have a web server running on an EC2 instance that is associated with a security group called "web-server-sg," you can create a security group rule allowing traffic from another security group called "database-sg" as the source. 
+  * This means that only instances associated with "database-sg" will be allowed to access the web server resources associated with "web-server-sg" based on the rules you specify.
+
 <img src="https://github.com/abhinav-dholi/AWS-Dev-Associate-Preparation/blob/main/Stephane%20Maarek%20Course/Pictures/secgrp_2.png"  width="80%" height="40%">
 
 * Can be attached to multiple instances 
