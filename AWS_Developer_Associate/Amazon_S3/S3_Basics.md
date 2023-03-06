@@ -1,21 +1,20 @@
-# Amazon S3 Basics 
-- [Amazon S3 Basics](#amazon-s3-basics)
-  - [S3 Overview](#s3-overview)
-  - [Buckets](#buckets)
-  - [Objects](#objects)
-  - [Amazon S3 – Security](#amazon-s3--security)
-  - [S3 Bucket Policies](#s3-bucket-policies)
-  - [Static Website Hosting](#static-website-hosting)
-  - [Versioning](#versioning)
-  - [Replication (CRR \& SRR)](#replication-crr--srr)
-  - [S3 Storage Classes](#s3-storage-classes)
-    - [**S3 Standard**](#s3-standard)
-    - [**S3 Storage Classes–Infrequent Access**](#s3-storage-classesinfrequent-access)
-    - [**Amazon S3 Glacier Storage Classes**](#amazon-s3-glacier-storage-classes)
-    - [**S3 Intelligent-Tiering**](#s3-intelligent-tiering)
-  - [S3 Hands on](#s3-hands-on)
+ 
+- [S3 Overview](#s3-overview)
+- [Buckets](#buckets)
+- [Objects](#objects)
+- [Amazon S3 – Security](#amazon-s3--security)
+- [S3 Bucket Policies](#s3-bucket-policies)
+- [Static Website Hosting](#static-website-hosting)
+- [Versioning](#versioning)
+- [Replication (CRR \& SRR)](#replication-crr--srr)
+- [S3 Storage Classes](#s3-storage-classes)
+  - [**S3 Standard**](#s3-standard)
+  - [**S3 Storage Classes–Infrequent Access**](#s3-storage-classesinfrequent-access)
+  - [**Amazon S3 Glacier Storage Classes**](#amazon-s3-glacier-storage-classes)
+  - [**S3 Intelligent-Tiering**](#s3-intelligent-tiering)
+- [S3 Hands on](#s3-hands-on)
 
-## S3 Overview
+# S3 Overview
 - Amazon S3 is one of the **main building blocks of AWS**
 - It’s advertised as ”infinitely scaling” storage 
 - Many websites use Amazon S3 as a backbone
@@ -25,7 +24,7 @@
 **Amazon S3 Use cases** 
 - Backup and storage,,, Disaster Recovery,,, Archive,,, Hybrid Cloud storage,,, Application hosting,,, Media hosting,,, Data lakes & big data analytics,,, Software delivery,,, Static website
 
-## Buckets 
+# Buckets 
 - Amazon S3 allows people to store objects (**files**) in “buckets” **(directories)**
 - Buckets must have a **globally unique name** (across all regions all accounts)
 - Buckets are defined at the **region level** 
@@ -38,7 +37,7 @@
     - Must NOT start with the prefix xn--
     - Must NOT end with the suffix -s3alias
 
-## Objects
+# Objects
 - Objects (files) have a Key
 - The key is the FULL path:
     - s3://my-bucket/my_file.txt
@@ -55,7 +54,7 @@
 - Tags (Unicode key / value pair – up to 10) – useful for security / lifecycle
 - Version ID (if versioning is enabled)
 
-## Amazon S3 – Security
+# Amazon S3 – Security
 - User-Based
   - IAM Policies – which API calls should be allowed for a specific user from IAM
   - Can use IAM role for allowing access to other aws resources
@@ -67,7 +66,7 @@
 - The user IAM permissions ALLOW it **OR** the resource policy ALLOWS it **AND** there’s no explicit DENY
 - Encryption: encrypt objects in Amazon S3 using encryption keys
 
-## S3 Bucket Policies
+# S3 Bucket Policies
 ![](Assets/2023-03-02-21-44-16.png)
 -  JSON based policies 
    -  Resources: buckets and objects 
@@ -80,7 +79,7 @@
    -  Force objects to be encrypted at upload 
    -  Grant access to another account **(Cross Account)**
 
-## Static Website Hosting
+# Static Website Hosting
 - S3 can host static websites and have them accessible on 
 the Internet
 - The website URL will be (depending on the region)
@@ -89,7 +88,7 @@ OR http://bucket-name.s3-website.aws-region.amazonaws.com
 - If you get a 403 Forbidden error, make sure the bucket 
 policy allows public reads!
 
-## Versioning
+# Versioning
 ![](Assets/2023-03-02-22-01-55.png)
 - You can version your files in Amazon S3
 - It is enabled at the bucket level
@@ -103,7 +102,7 @@ policy allows public reads!
   - Suspending versioning does not delete the previous versions
 - If you delete a file with no version in buket with versioning enabled, the file will just be marked as deleted, but a versioned file will be permanently deleted.
 
-## Replication (CRR & SRR)
+# Replication (CRR & SRR)
 - Must enable Versioning in source and destination buckets
 - Cross-Region Replication (CRR)
 - Same-Region Replication (SRR)
@@ -124,7 +123,7 @@ policy allows public reads!
   - If bucket 1 has replication into bucket 2, which has replication into bucket 3
   - Then objects created in bucket 1 are not replicated to bucket 3
 
-## S3 Storage Classes
+# S3 Storage Classes
 **S3 Durability and Availability**
 - Durability:
   - High durability (99.999999999%, 11 9’s) of objects across multiple AZ
@@ -135,7 +134,7 @@ policy allows public reads!
   - Varies depending on storage class
   - Example: S3 standard has 99.99% availability = not available 53 minutes a year
 
-### **S3 Standard** 
+## **S3 Standard** 
 - 99.99% Availability
 - Used for frequently accessed data
 - Low latency and high throughput
@@ -143,7 +142,7 @@ policy allows public reads!
 - Use Cases: Big Data analytics, mobile & gaming applications, content 
 distribution…
 
-### **S3 Storage Classes–Infrequent Access**
+## **S3 Storage Classes–Infrequent Access**
 - For data that is less frequently accessed, but requires rapid access when needed
 - Lower cost than S3 Standard
 - **Amazon S3 Standard-Infrequent Access** (S3 Standard-IA)
@@ -154,7 +153,7 @@ distribution…
   - 99.5% Availability
   - Use Cases: Storing secondary backup copies of on-premises data, or data you can recreate
 
-### **Amazon S3 Glacier Storage Classes**
+## **Amazon S3 Glacier Storage Classes**
 - Low-cost object storage meant for archiving / backup
 - Pricing: price for storage + object retrieval cost
 - **Amazon S3 Glacier Instant Retrieval**
@@ -168,7 +167,7 @@ distribution…
   - Standard (12 hours), Bulk (48 hours)
   - Minimum storage duration of 180 days
 
-### **S3 Intelligent-Tiering**
+## **S3 Intelligent-Tiering**
 - Small monthly monitoring and auto-tiering fee
 - Moves objects automatically between Access Tiers based on usage
 - There are no retrieval charges in S3 Intelligent-Tiering
@@ -182,7 +181,7 @@ distribution…
 ![](Assets/2023-03-04-21-12-46.png)
 - The minimum storage duration refers to the minimum amount of time for which an object must be stored in a particular storage class before it can be moved or deleted from current storage class.
 
-## S3 Hands on 
+# S3 Hands on 
 - Create a bucket and use all default options
 - ![](Assets/2023-03-02-21-26-00.png)
 - Add a file (image) in the bucket
