@@ -1,3 +1,20 @@
+- [Amazon S3 – Object Encryption](#amazon-s3--object-encryption)
+  - [SSE-S3](#sse-s3)
+  - [SSE-KMS](#sse-kms)
+  - [SSE-C](#sse-c)
+  - [Client-Side Encryption](#client-side-encryption)
+  - [Amazon S3–Encryption in transit (SSL/TLS)](#amazon-s3encryption-in-transit-ssltls)
+  - [Default Encryption v Bucket Policies](#default-encryption-v-bucket-policies)
+- [S3 CORS](#s3-cors)
+  - [CORS](#cors)
+  - [CORS in S3](#cors-in-s3)
+  - [Hands-on](#hands-on)
+- [Amazon S–MFA Delete](#amazon-smfa-delete)
+- [S3 Access Logs](#s3-access-logs)
+- [Amazon S3–Pre-Signed URLs](#amazon-s3pre-signed-urls)
+- [S3–Access Points](#s3access-points)
+  - [S3 Object Lambda](#s3-object-lambda)
+
 # Amazon S3 – Object Encryption
 - You can encrypt objects in S3 buckets using one of 4 methods
 - Server-Side Encryption (SSE)
@@ -50,7 +67,7 @@ Service Quotas Console
 - Clients must decrypt data themselves when retrieving from Amazon S3
 - Customer fully manages the keys and encryption cycle
 
-## Amazon S3 – Encryption in transit (SSL/TLS)
+## Amazon S3–Encryption in transit (SSL/TLS)
 - Encryption in flight is also called SSL/TLS 
 - Amazon S3 exposes two endpoints:
   - HTTP Endpoint – non encrypted
@@ -58,3 +75,91 @@ Service Quotas Console
 - HTTPS is recommended
 - HTTPS is mandatory for SSE-C
 - Most clients would use the HTTPS endpoint by default
+
+## Default Encryption v Bucket Policies
+![](Assets/2023-03-08-20-01-32.png)
+- SSE-S3 encryption is automatically applied to new objects stored in S3 bucket
+- Optionally, you can “force encryption” using a bucket policy and refuse any API call 
+to PUT an S3 object without encryption headers (SSE-KMS or SSE-C)
+- Note: Bucket Policies are evaluated before “Default Encryption”
+
+# S3 CORS
+## CORS
+![](Assets/2023-03-08-20-34-59.png)
+- Cross-Origin Resource Sharing (CORS)
+- Origin = scheme (protocol) + host (domain) + port
+- example: https://www.example.com (implied port is 443 for HTTPS, 80 for HTTP)
+- Web Browser based mechanism to allow requests to other origins while 
+visiting the main origin
+- Same origin: http://example.com/app1 & http://example.com/app2
+- Different origins: http://www.example.com & http://other.example.com
+- The requests won’t be fulfilled unless the other origin allows for the 
+requests, using CORS Headers (example: Access-Control-Allow-Origin)
+## CORS in S3
+![](Assets/2023-03-08-20-36-25.png)
+- If a client makes a cross-origin request on our S3 bucket, we need to enable 
+the correct CORS headers
+- It’s a popular exam question
+- You can allow for a specific origin or for * (all origins)
+## Hands-on
+- Create bucket1 and enable statics website hosting and in the index.html file try to request any html file from another bucket2 (static hosting enabled) using fetch 
+- In the browser console, we will see cors error when index.html is loaded.
+- So, paste relevant cors headers in the cors section of bucket2 to enable the origin of bucket1
+  ![](Assets/2023-03-08-20-40-11.png)
+
+# Amazon S–MFA Delete
+- MFA (Multi-Factor Authentication) – force users to generate a code on a 
+device (usually a mobile phone or hardware) before doing important 
+operations on S3
+- MFA will be required to:
+  - Permanently delete an object version
+  - Suspend Versioning on the bucket
+- MFA won’t be required to:
+  - Enable Versioning
+  - List deleted versions
+- To use MFA Delete, Versioning must be enabled on the bucket
+- Only the bucket owner (root account) can enable/disable MFA Delete
+- Can modify mfa settings only in CLI,SDK or S3 API 
+
+# S3 Access Logs
+- For audit purpose, you may want to log all access to S3 buckets
+- Any request made to S3, from any account, authorized or denied, 
+will be logged into another S3 bucket
+- That data can be analyzed using data analysis tools…
+- The target logging bucket must be in the same AWS region
+- The log format is at: 
+https://docs.aws.amazon.com/AmazonS3/latest/dev/LogFormat.html
+
+# Amazon S3–Pre-Signed URLs
+![](Assets/2023-03-08-21-24-03.png)
+- Generate pre-signed URLs using the S3 Console, AWS CLI or SDK
+- Works at object level in a buckets
+- URL Expiration
+  - S3 Console – 1 min up to 720 mins (12 hours)
+  - AWS CLI – configure expiration with --expires-in parameter in seconds (default 3600 secs, max. 604800 secs ~ 168 hours)
+- Users given a pre-signed URL inherit the permissions of the user that generated the URL for GET / PUT
+- Examples: 
+  - Allow only logged-in users to download a premium video from your S3 bucket
+  - Allow an ever-changing list of users to download files by generating URLs dynamically
+  - Allow temporarily a user to upload a file to a precise location in your S3 bucket
+
+# S3–Access Points
+![](Assets/2023-03-08-21-33-50.png)
+- Each Access Point gets its own DNS and policy to limit who can access it
+- A specific IAM user / group
+- One policy per Access Point => Easier to manage than complex bucket policies
+## S3 Object Lambda
+![](Assets/2023-03-08-21-35-18.png)
+- Use AWS Lambda Functions to 
+change the object before it is 
+retrieved by the caller application
+- Only one S3 bucket is needed, on 
+top of which we create S3 Access 
+Point and S3 Object Lambda Access Points. 
+- Use Cases:
+  - Redacting personally identifiable 
+  information for analytics or non- production environments.
+  - Converting across data formats, such 
+  as converting XML to JSON.
+  - Resizing and watermarking images on 
+the fly using caller-specific details, such as the user who requested the objectV
