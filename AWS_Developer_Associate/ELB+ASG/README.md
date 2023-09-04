@@ -1,4 +1,4 @@
 **Topics**:
-- [Basics](Basics)
+- [Basics](Basics.md)
 - [Elastic Load Balancing](ELB.md)
 - [Auto Scaling Groups](ASG.md)
